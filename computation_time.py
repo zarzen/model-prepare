@@ -12,13 +12,15 @@ def vision_model_time():
     for name in torch_vision_models:
         model = torch.hub.load("pytorch/vision:v0.4.2", name, pretrained=True)
         model = model.to("cuda")
+        model.eval()
         layers = []
         get_layers(model, layers)
         sizes = get_layers_size(layers)
 
         # random data
         for i in range(10):
-            data = torch.rand((8, 3, 299, 299)).to("cuda")
+            data = torch.rand((1, 3, 224, 224)).to("cuda")
+            torch.cuda.synchronize()
             t1 = time.time()
             outputs = model(data)
             torch.cuda.synchronize()
@@ -47,9 +49,11 @@ def _nlp_exp(model_class, tokenizer_class, pretrained_weights):
     sizes = get_layers_size(layers)
 
     model = model.to('cuda')
+    model.eval()
     for i in range(10):
         input_ids = torch.tensor([tokenizer.encode(
             "Let's see all hidden-states and attentions on this text", add_space_before_punct_symbol=True)] * 8).to('cuda')
+        torch.cuda.synchronize()
         t1 = time.time()
         outputs = model(input_ids)
         torch.cuda.synchronize()
