@@ -56,7 +56,7 @@ def process_vision_models():
 nlp_models = [(BertModel,       BertTokenizer,       'bert-base-uncased'),
               (OpenAIGPTModel,  OpenAIGPTTokenizer,  'openai-gpt'),
               (GPT2Model,       GPT2Tokenizer,       'gpt2'),
-              (CTRLModel,       CTRLTokenizer,       'ctrl'),
+            #   (CTRLModel,       CTRLTokenizer,       'ctrl'),
               (TransfoXLModel,  TransfoXLTokenizer,  'transfo-xl-wt103'),
               (XLNetModel,      XLNetTokenizer,      'xlnet-base-cased'),
               (XLMModel,        XLMTokenizer,        'xlm-mlm-enfr-1024'),
