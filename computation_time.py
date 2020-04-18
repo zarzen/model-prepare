@@ -10,8 +10,12 @@ def vision_model_time():
     """"""
 
     for name in torch_vision_models:
+        _t = time.time()
         model = torch.hub.load("pytorch/vision:v0.4.2", name, pretrained=True)
+        print("load ", name, 'cost', time.time() - _t, 's')
+        _t = time.time()
         model = model.to("cuda")
+        print('to cuda cost', time.time() - _t)
         model.eval()
         layers = []
         get_layers(model, layers)
@@ -38,7 +42,7 @@ def vision_model_time():
         torch.cuda.empty_cache()
 
 
-def _nlp_exp(model_class, tokenizer_class, pretrained_weights):
+def _nlp_exp(model_class, tokenizer_class, pretrained_weights, config):
     # Load pretrained model/tokenizer
     tokenizer = tokenizer_class.from_pretrained(
         pretrained_weights, cache_dir="./huggingface-cache")
@@ -74,8 +78,8 @@ def _nlp_exp(model_class, tokenizer_class, pretrained_weights):
 
 
 def nlp_model_inf_time():
-    for model_class, tokenizer_class, pretrained_weights in nlp_models:
-        _nlp_exp(model_class, tokenizer_class, pretrained_weights)
+    for model_class, tokenizer_class, pretrained_weights, conf in nlp_models:
+        _nlp_exp(model_class, tokenizer_class, pretrained_weights, conf)
         torch.cuda.empty_cache()
         time.sleep(5)
 
