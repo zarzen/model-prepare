@@ -9,7 +9,7 @@ bw = 80e9  # 80Gbps
 def vision_model_time():
     """"""
 
-    for name in torch_vision_models:
+    for name, _ in torch_vision_models:
         _t = time.time()
         model = torch.hub.load("pytorch/vision:v0.4.2", name, pretrained=True)
         print("load ", name, 'cost', time.time() - _t, 's')
@@ -23,6 +23,7 @@ def vision_model_time():
 
         # random data
         for i in range(10):
+            # pylint: disable=no-member
             data = torch.rand((1, 3, 224, 224)).to("cuda")
             torch.cuda.synchronize()
             t1 = time.time()
@@ -55,6 +56,7 @@ def _nlp_exp(model_class, tokenizer_class, pretrained_weights, config):
     model = model.to('cuda')
     model.eval()
     for i in range(10):
+        # pylint: disable=not-callable
         input_ids = torch.tensor([tokenizer.encode(
             "Let's see all hidden-states and attentions on this text", add_space_before_punct_symbol=True)] * 8).to('cuda')
         torch.cuda.synchronize()

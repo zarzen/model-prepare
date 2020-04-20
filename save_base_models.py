@@ -11,7 +11,7 @@ def process_vision_models():
     if not os.path.exists(data_dir):
         os.makedirs(data_dir)
 
-    for name in torch_vision_models:
+    for name, _ in torch_vision_models:
         model = torch.hub.load("pytorch/vision:v0.4.2", name, pretrained=True)
         layers = []
         get_layers(model, layers)

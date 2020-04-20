@@ -14,6 +14,7 @@ def perturb_model(module, seed):
         # change current module parameters
         for p in module.parameters():
             p_size = p.size()
+            # pylint: disable=no-member
             noise = (torch.rand(p_size) - 0.5) / 1e4
             new_param = p.data + noise
             p.data = new_param
@@ -28,10 +29,10 @@ def perturb_vision_models():
     save_to = "../perturbed-models/vision"
     if not os.path.exists(save_to):
         os.makedirs(save_to)
-
+    # pylint: disable=no-member
     rand_data = torch.rand((8, 3, 299, 299))
 
-    for name in tqdm(torch_vision_models):
+    for name, _ in tqdm(torch_vision_models):
         print("===== working on model name", name)
         for seed in range(nrepeat):
             print("working on seed", seed)
@@ -82,6 +83,7 @@ def perturb_nlp_models():
             _ids = tokenizer.encode(
                 sent, max_length=50, pad_to_max_length=True, add_space_before_punct_symbol=True)
             input_ids.append(_ids)
+        # pylint: disable=not-callable
         input_ids = torch.tensor(input_ids)
 
         print("===== working on model name", model_class.__name__)
