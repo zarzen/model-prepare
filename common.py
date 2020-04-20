@@ -13,7 +13,7 @@ torch_vision_models = [
     ['densenet169', models.densenet169],
     ['densenet201', models.densenet201],
     ['inception_v3', models.inception_v3],
-    ['googlenet', models.googlenet],
+    # ['googlenet', models.googlenet],
     ['alexnet', models.alexnet],
     ['shufflenet_v2_x0_5', models.shufflenet_v2_x0_5],
     ['shufflenet_v2_x1_0', models.shufflenet_v2_x1_0],
@@ -22,22 +22,23 @@ torch_vision_models = [
 ]
 
 # using huggingface api
-nlp_models = [(BertModel,       BertTokenizer,       'bert-base-uncased', BertConfig),
-              (OpenAIGPTModel,  OpenAIGPTTokenizer,  'openai-gpt', OpenAIGPTConfig),
-              (GPT2Model,       GPT2Tokenizer,       'gpt2', GPT2Config),
-              (TransfoXLModel,  TransfoXLTokenizer,
-               'transfo-xl-wt103', TransfoXLConfig),
-              (XLNetModel,      XLNetTokenizer,
-               'xlnet-base-cased', XLNetConfig),
-              (XLMModel,        XLMTokenizer,
-               'xlm-mlm-enfr-1024', XLMConfig),
-              (DistilBertModel, DistilBertTokenizer,
-               'distilbert-base-cased', DistilBertConfig),
-              (RobertaModel,    RobertaTokenizer,
-               'roberta-base', RobertaConfig),
-              (XLMRobertaModel, XLMRobertaTokenizer,
-               'xlm-roberta-base', XLMRobertaConfig),
-              ]
+nlp_models = [
+    (BertModel,       BertTokenizer,       'bert-base-uncased', BertConfig),
+    (OpenAIGPTModel,  OpenAIGPTTokenizer,  'openai-gpt', OpenAIGPTConfig),
+    (GPT2Model,       GPT2Tokenizer,       'gpt2', GPT2Config),
+    (TransfoXLModel,  TransfoXLTokenizer,
+     'transfo-xl-wt103', TransfoXLConfig),
+    (XLNetModel,      XLNetTokenizer,
+     'xlnet-base-cased', XLNetConfig),
+    (XLMModel,        XLMTokenizer,
+     'xlm-mlm-enfr-1024', XLMConfig),
+    (DistilBertModel, DistilBertTokenizer,
+     'distilbert-base-cased', DistilBertConfig),
+    (RobertaModel,    RobertaTokenizer,
+     'roberta-base', RobertaConfig),
+    (XLMRobertaModel, XLMRobertaTokenizer,
+     'xlm-roberta-base', XLMRobertaConfig),
+]
 
 
 def get_layers(module, layers):
@@ -63,9 +64,9 @@ def get_layers_size(layers):
     return sizes
 
 
-def load_nlp_model(paramPath, modelClass, configClass):
+def load_nlp_model(paramPath, modelClass, configClass, pretrainName):
     """"""
-    config = configClass()
+    config = configClass.from_pretrained(pretrainName)
     model = modelClass(config)
     model.load_state_dict(torch.load(paramPath))
     model.eval()
